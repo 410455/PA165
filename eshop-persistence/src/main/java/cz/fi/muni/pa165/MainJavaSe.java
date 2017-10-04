@@ -1,16 +1,14 @@
 package cz.fi.muni.pa165;
 
-import java.sql.SQLException;
-import java.util.List;
+import cz.fi.muni.pa165.entity.Category;
+import cz.fi.muni.pa165.entity.Product;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
-
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
-
-import cz.fi.muni.pa165.entity.Category;
-import cz.fi.muni.pa165.entity.Product;
+import java.sql.SQLException;
+import java.util.List;
 
 public class MainJavaSe {
 	private static EntityManagerFactory emf;
@@ -22,7 +20,7 @@ public class MainJavaSe {
 		emf = Persistence.createEntityManagerFactory("default");
 		try {
 			// BEGIN YOUR CODE
-			task04();
+			task05();
 			// END YOUR CODE
 		} finally {
 			emf.close();
@@ -71,20 +69,28 @@ public class MainJavaSe {
 	}
 
 	private static void task05() {
-		EntityManager em = emf.createEntityManager();
+        EntityManager em = emf.createEntityManager();
 		em.getTransaction().begin();
 		Category category = new Category();
 		category.setName("Electronics");
-		em.persist(category);
+		em.persist(category);  // volání persist způsobí, že v instanci Category JPA nastaví id a tím pádem se entita dostane do stavu managed
 		em.getTransaction().commit();
 		em.close();
 
 		// TODO under this line. create new EM and start new transaction. Merge
 		// the detached category
 		// into the context and change the name to "Electro"
+        EntityManager entityManager = emf.createEntityManager();
+        entityManager.getTransaction().begin();
+
+        category = entityManager.merge(category);  // tady přepisuji referenci category, protože merge vrací novou (ta původní je pořád ve stavu detached) - nová je ve stavu managed
+        category.setName("Electro");  // změna se automaticky promítne (díky tomu, že category je ve stavu managed)
+
+        entityManager.getTransaction().commit();
+        entityManager.close();
 
 
-		// The code below is just testing code. Do not modify it
+        // The code below is just testing code. Do not modify it
 		EntityManager checkingEm = emf.createEntityManager();
 		checkingEm.getTransaction().begin();
 		Category cat = checkingEm.find(Category.class, category.getId());
