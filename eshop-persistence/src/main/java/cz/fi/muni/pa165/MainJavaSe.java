@@ -36,6 +36,20 @@ public class MainJavaSe {
 		// You must first obtain the Entity manager
 		// Then you have to start transaction using getTransaction().begin()
 		// Then use persist() to persist both of the categories and finally commit the transaction
+		EntityManager emgr = emf.createEntityManager();
+		emgr.getTransaction().begin();
+
+		Category electronics = new Category();
+		electronics.setName("Electronics");
+
+		Category musical = new Category();
+		musical.setName("Musical");
+
+		emgr.persist(electronics);
+		emgr.persist(musical);
+
+		emgr.getTransaction().commit();
+		emgr.close();
 
 		// The code below is just testing code. Do not modify it
 		EntityManager em = emf.createEntityManager();
