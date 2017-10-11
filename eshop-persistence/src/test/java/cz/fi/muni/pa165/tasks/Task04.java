@@ -229,8 +229,9 @@ public class Task04 extends AbstractTestNGSpringContextTests {
 	public void criteriaFindAll(){
 		CriteriaBuilder cb = em.getCriteriaBuilder();
 		CriteriaQuery<Product> query = cb.createQuery(Product.class);
-		//TODO under this line create a Root<Product> instance and then use .select() method on this instance
-		
+        // under this line create a Root<Product> instance and then use .select() method on this instance
+        Root<Product> product = query.from(Product.class);
+        query.select(product);
 		
 		List<Product> found = em.createQuery(query).getResultList();
 		Assert.assertEquals(found.size(), 4);
@@ -245,10 +246,12 @@ public class Task04 extends AbstractTestNGSpringContextTests {
 	public void criteriaFindProductsWithNonEmptyCategory() {
 		CriteriaBuilder cb = em.getCriteriaBuilder();
 		CriteriaQuery<Product> query = cb.createQuery(Product.class);
-		//TODO under this line create a Root<Product> instance and then use .select() method on this instance and .where on this instance
+		// under this line create a Root<Product> instance and then use .select() method on this instance and .where on this instance
 		//content of where should use CriteriaBuilder.isNotEmpty method
-		
-		List<Product> found = em.createQuery(query).getResultList();
+        Root<Product> product = query.from(Product.class);
+        query.select(product).where(cb.isNotEmpty(product.get("categories")));
+
+        List<Product> found = em.createQuery(query).getResultList();
 		Assert.assertEquals(found.size(), 3);
 	}
 }

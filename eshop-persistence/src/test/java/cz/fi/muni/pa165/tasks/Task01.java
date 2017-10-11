@@ -12,24 +12,29 @@ import org.testng.annotations.Test;
 import cz.fi.muni.pa165.PersistenceSampleApplicationContext;
 import cz.fi.muni.pa165.entity.Category;
 
+import static org.springframework.test.util.AssertionErrors.assertEquals;
 
 
-public class Task01  {
+@ContextConfiguration(classes = PersistenceSampleApplicationContext.class)
+public class Task01 extends AbstractTestNGSpringContextTests {
 
-	
-	@PersistenceUnit
-	private EntityManagerFactory emf;
 
-	@Test
-	public void categoryTest() {
-		EntityManager em = emf.createEntityManager();
-		em.getTransaction().begin();
-		Category cat = new Category();
-		cat.setName("Test");
-		em.persist(cat);
-		em.getTransaction().commit();
-		em.close();
-		//TODO under this line: create a second entity manager in categoryTest, use find method to find the category and assert its name.
-	}
+    @PersistenceUnit
+    private EntityManagerFactory emf;
+
+    @Test
+    public void categoryTest() {
+        EntityManager em = emf.createEntityManager();
+        em.getTransaction().begin();
+        Category cat = new Category();
+        cat.setName("Test");
+        em.persist(cat);
+        em.getTransaction().commit();
+        em.close();
+        //TODO under this line: create a second entity manager in categoryTest, use find method to find the category and assert its name.
+        EntityManager entityManager = emf.createEntityManager();
+        Category category = entityManager.find(Category.class, cat.getId());
+        assertEquals("Category name should be Test", "Test", category.getName());
+    }
 
 }
