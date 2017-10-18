@@ -2,13 +2,13 @@ package cz.fi.muni.carshop;
 
 import static org.hamcrest.Matchers.hasKey;
 import static org.hamcrest.Matchers.hasSize;
-import static org.junit.Assert.assertThat;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 import java.awt.Color;
 import java.util.List;
 import java.util.Map;
 
+import cz.fi.muni.carshop.exceptions.RequestedCarNotFoundException;
 import org.junit.Test;
 
 import org.junit.rules.ExpectedException;
@@ -63,5 +63,24 @@ public class CarShopStorageServiceTest {
 				hasSize(3));
 
 	}
+
+	@Test
+	public void testSellingACar() {
+		Car car = new Car(Color.RED, CarTypes.BMW, 2016, 1200000);
+		service.addCarToStorage(car);
+		int sizeAfterAdding = CarShopStorage.getInstancce().getCars().size();
+		try {
+			service.sellCar(car);
+			assertEquals(sizeAfterAdding - 1, CarShopStorage.getInstancce().getCars().size());
+		} catch (RequestedCarNotFoundException e) {
+			fail();
+		}
+	}
+
+	@Test
+    public void testSellingNonExistentCar_throwsException() throws RequestedCarNotFoundException {
+	    thrown.expect(RequestedCarNotFoundException.class);
+	    service.sellCar(new Car(Color.BLACK, CarTypes.BMW, 2017, 10));
+    }
 
 }
