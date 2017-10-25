@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <!--This is for MainXml task:-->
+    <!--<bean class="cz.muni.fi.pa165.currency.ExchangeRateTableImpl" id="exchangeRateTableImpl">-->
+
+    <!--</bean>-->
+    <!--<bean class="cz.muni.fi.pa165.currency.CurrencyConvertorImpl" id="currencyConvertorImpl">-->
+        <!--<constructor-arg ref="exchangeRateTableImpl"/>-->
+    <!--</bean>-->
+
+    <!--This is for MainAnnotations task:-->
+    <!--<context:annotation-config />-->
+</beans>
