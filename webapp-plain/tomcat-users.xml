@@ -3,8 +3,10 @@
 
     <role rolename="administrator" description="administrators of this application"/>
     <role rolename="user" description="ordinary users"/>
+    <role rolename="snooper" description="snoopers" />
 
     <user username="admin" password="admin" roles="administrator,user"/>
     <user username="pepa" password="heslo" roles="user"/>
+    <user username="snoop" password="snoop" roles="snooper"/>
 
 </tomcat-users>
